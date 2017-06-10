@@ -1,5 +1,7 @@
 ## Filmstrip reporter
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/jcblw/filmstrip-reporter.svg)](https://greenkeeper.io/)
+
 This is a under development report that uses `phantomas` to generate filmstrips to be able to determine time to meaningful paint on a website.
 
 # TODO
