@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "get-pixels": "^3.3.0",
+    "image-size": "^0.5.4",
     "opener": "^1.4.3",
     "phantomas": "^1.19.0",
     "showdown": "^1.7.1"

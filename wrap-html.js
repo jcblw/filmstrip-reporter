@@ -23,12 +23,16 @@ module.exports = function(html, filmstrip) {
 
         ul.film-strip {
           display: flex;
+          flex-wrap: wrap;
           list-style-type: none;
           padding: 0;
         }
 
         ul.film-strip li {
-          flex: 1;
+          flex: 0;
+          min-width: 25%;
+          box-sizing: border-box;
+          padding: 10px;
         }
 
         ul.film-strip li:hover {
@@ -65,7 +69,7 @@ module.exports.getFilmstriptHTML = (screenshots, screenshotsdir) => {
       return `
         <li>
           <img style="max-width:100%;" src=${encodeURI(data.path)} />
-          <p>${data.ms}</p>
+          <p>${data.ms} MS</p>
         </li>
       `
     })
