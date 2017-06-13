@@ -1,5 +1,7 @@
 ## Filmstrip reporter
 
+![screenhot](https://github.com/jcblw/filmstrip-reporter/blob/master/assets/screenshot.png?raw=true)
+
 This is a under development report that uses `phantomas` to generate filmstrips to be able to determine time to meaningful paint on a website.
 
 # TODO
