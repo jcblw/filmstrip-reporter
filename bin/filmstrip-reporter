@@ -1,24 +1,45 @@
+#!/usr/bin/env node
+
+/*
+  Usage
+  -----
+
+  ```
+  filmstrip-reporter --url=https://headspace.com
+  ```
+
+  options
+  - url : url to run filmstrip against. default: https://google.com
+  - viewport: width x height of browser. default: 1366x768
+  - foldHeight: the height of the fold you would scan. default: 300
+  - cookie: the cookies to use when requesting page. default: ''
+*/
+
 var fs = require('fs')
 var path = require('path')
 const { spawn } = require('child_process')
 var showdown = require('showdown')
 var getPixels = require('get-pixels')
 var opener = require('opener')
-var wrapHTML = require('./wrap-html')
+var argv = require('yargs').argv
+var wrapHTML = require('../src/wrap-html')
 var converter = new showdown.Converter()
+var url = argv.url || 'https://google.com'
 var phantomasReport
 
-const dirname = `./reports/${new Date()}`
+const dirname = `./reports/${url.split('/').pop()}/${new Date()}`
 const screenshotsdir = `${dirname}/screenshots`
 const phantomasPath = path.resolve(
-  __dirname,
+  process.cwd(),
   './node_modules/phantomas/bin/phantomas.js'
 )
 
 var phantomas = spawn(phantomasPath, [
-  'https://headspace.com',
+  url,
   '--film-strip',
-  `--film-strip-dir=${screenshotsdir}`
+  `--film-strip-dir=${screenshotsdir}`,
+  `--viewport=${argv.viewport || '1366x768'}`,
+  `--cookie=${argv.cookie || ''}`
 ])
 
 function getScreenShots() {
@@ -42,7 +63,7 @@ function isNotWhite(meta) {
 function hasPercentPixels(percent) {
   return meta => {
     const { data } = meta.pixels
-    const length = data.length
+    const length = meta.pixels.shape[0] * (argv.foldHeight || 300)
     let colorpixels = 0
     let pixelcount = {}
     for (let i = 0; i < length; i += 3) {
@@ -65,11 +86,13 @@ function getScreenShotMeta(screenshots) {
       imageName =>
         new Promise((resolve, reject) => {
           const imagePath = path.resolve(screenshotsdir, imageName)
+          const relImagePath = path.relative(dirname, imagePath)
           getPixels(imagePath, (err, pixels) => {
             if (err) {
               reject(err)
             }
             resolve({
+              relImagePath,
               imageName,
               imagePath,
               pixels
@@ -96,8 +119,7 @@ phantomas.on('close', async code => {
   screenshots = screenshots
     .filter(isNotBlank)
     .filter(isNotWhite)
-    .filter(hasPercentPixels(15))
-    .map(meta => meta.imageName)
+    .filter(hasPercentPixels(1))
   fs.writeFile(
     filename,
     wrapHTML(html, wrapHTML.getFilmstriptHTML(screenshots, screenshotsdir)),

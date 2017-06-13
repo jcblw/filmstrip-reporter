@@ -1,0 +1,32 @@
+* {
+  box-sizing: border-box;
+}
+
+.markdown-body {
+  margin: 0 20px;
+  padding: 40px;
+}
+
+.filmstrip-container {
+  font-family: sans-serif;
+  width: 100%;
+  overflow-x: scroll;
+  background: gainsboro;
+  padding: 40px;
+}
+
+ul.filmstrip {
+  display: flex;
+  list-style-type: none;
+}
+
+ul.filmstrip li {
+  flex: 0;
+  min-width: 200px;
+  padding: 10px;
+}
+
+ul.filmstrip li img {
+  flex: 0;
+  border: 3px solid white;
+}

@@ -1,8 +1,10 @@
 var path = require('path')
+var fs = require('fs')
+
+var cssPath = path.resolve(__dirname, './styles.css')
 
 module.exports = function(html, filmstrip) {
   return `<!doctype html>
-
     <html>
       <link
         href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css"
@@ -15,35 +17,17 @@ module.exports = function(html, filmstrip) {
         rel="stylesheet"
       />
       <style type="text/css">
-        .markdown-body {
-          max-width: 800px;
-          margin: 0 auto;
-          padding: 40px;
-        }
-
-        ul.film-strip {
-          display: flex;
-          flex-wrap: wrap;
-          list-style-type: none;
-          padding: 0;
-        }
-
-        ul.film-strip li {
-          flex: 0;
-          min-width: 25%;
-          box-sizing: border-box;
-          padding: 10px;
-        }
-
-        ul.film-strip li:hover {
-          flex: 6;
-        }
+        ${fs.readFileSync(cssPath).toString('utf8')}
       </style>
       <body>
         <div class="markdown-body">
           <h1>Report</h1>
           <h2>Filmstrip</h2>
+        </div>
+        <div class='filmstrip-container'>
           ${filmstrip}
+        </div>
+        <div class="markdown-body">
           ${html}
         </div>
       </body>
@@ -53,13 +37,13 @@ module.exports = function(html, filmstrip) {
 
 module.exports.getFilmstriptHTML = (screenshots, screenshotsdir) => {
   return `
-  <ul class='film-strip'>
+  <ul class='filmstrip'>
   ${screenshots
     .map(file => {
-      const ms = file.split('-').pop().split('.').shift()
+      const ms = file.imageName.split('-').pop().split('.').shift()
       return {
         ms,
-        path: path.resolve(path.resolve(process.cwd(), screenshotsdir, file))
+        path: file.relImagePath
       }
     })
     .sort((x, y) => {

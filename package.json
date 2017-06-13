@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "filmstrip-reporter": "./bin/filmstrip-reporter"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -14,6 +17,7 @@
     "image-size": "^0.5.4",
     "opener": "^1.4.3",
     "phantomas": "^1.19.0",
-    "showdown": "^1.7.1"
+    "showdown": "^1.7.1",
+    "yargs": "^8.0.2"
   }
 }
