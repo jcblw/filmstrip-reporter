@@ -30,8 +30,8 @@ var phantomasReport
 const dirname = `./reports/${url.split('/').pop()}/${new Date()}`
 const screenshotsdir = `${dirname}/screenshots`
 const phantomasPath = path.resolve(
-  process.cwd(),
-  './node_modules/phantomas/bin/phantomas.js'
+  __dirname,
+  '../node_modules/phantomas/bin/phantomas.js'
 )
 
 var phantomas = spawn(phantomasPath, [
